@@ -35,14 +35,13 @@ namespace UMA
       get{
        if(string.IsNullOrEmpty(customSettingsPathCached)){
         customSettingsPathCached=GetUMASettingsPath();
-        if(customSettingsPath!=null){
+        if(customSettingsPathCached!=null){
          UnityEngine.Debug.Log("...we have UMASettings.asset! :)... it's present at "+customSettingsPathCached);
         }
        }
        return customSettingsPathCached;
       }
      }
-
         [Multiline(7)]
         public string WarningMessage = "Warning: Please do not modify these\n settings using the inspector.\n Use the project settings instead.\n Modifying settings that need compiler\n directives set will NOT work if you\n edit them in the inspector!";
         public bool Initialized = false;
