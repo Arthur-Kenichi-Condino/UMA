@@ -16,14 +16,14 @@ namespace UMA
         private static string GetUMASettingsPath(){
          string[]guids=UnityEditor.AssetDatabase.FindAssets("t:Script UMASettings");
          if(guids.Length==0){
-          UnityEngine.Debug.LogError("UMASettings script (ScriptableObject) not found! :(");
+          UnityEngine.Debug.LogError("...UMASettings.asset script (ScriptableObject) not found! :(");
           return null;
          }
          string scriptPath=UnityEditor.AssetDatabase.GUIDToAssetPath(guids[0]);
          scriptPath=scriptPath.Replace("\\","/");
          int assetsIndex=scriptPath.IndexOf("/Assets/UMA/");
          if(assetsIndex<0){
-          UnityEngine.Debug.LogError("UMA root folders '/Assets/UMA/...' not found in path: "+scriptPath);
+          UnityEngine.Debug.LogError("...UMA root folder '/Assets/UMA/...' not found in path: "+scriptPath);
           return null;
          }
          string basePath=scriptPath.Substring(0,assetsIndex+"/Assets/UMA".Length);
@@ -31,7 +31,17 @@ namespace UMA
          return finalPath;
         }
      static string customSettingsPathCached=null;
-     public static string customSettingsPath=String.IsNullOrEmpty(customSettingsPathCached)?customSettingsPathCached=GetUMASettingsPath():customSettingsPathCached;
+     public static string customSettingsPath{
+      get{
+       if(string.IsNullOrEmpty(customSettingsPathCached)){
+        customSettingsPathCached=GetUMASettingsPath();
+        if(customSettingsPath!=null){
+         UnityEngine.Debug.Log("...we have UMASettings.asset! :)... it's present at "+customSettingsPathCached);
+        }
+       }
+       return customSettingsPathCached;
+      }
+     }
 
         [Multiline(7)]
         public string WarningMessage = "Warning: Please do not modify these\n settings using the inspector.\n Use the project settings instead.\n Modifying settings that need compiler\n directives set will NOT work if you\n edit them in the inspector!";
