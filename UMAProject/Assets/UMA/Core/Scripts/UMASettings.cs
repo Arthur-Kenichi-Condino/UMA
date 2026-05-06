@@ -12,7 +12,23 @@ namespace UMA
 
     public class UMASettings : ScriptableObject
     {
-        public const string customSettingsPath = "Assets/AKCondinoO.ExternalCode/umasteeringgroup/UMA/InternalDataStore/InGame/Resources/UMASettings.asset";
+        private static string GetUMASettingsPath(){
+         string[]guids=UnityEditor.AssetDatabase.FindAssets("t:Script UMASettings");
+         if(guids.Length==0){
+          UnityEngine.Debug.LogError("UMASettings script not found!");
+          return null;
+         }
+         string scriptPath=UnityEditor.AssetDatabase.GUIDToAssetPath(guids[0]);
+         string basePath=System.IO.Path.GetDirectoryName(scriptPath);
+         basePath=basePath.Replace("\\","/");
+         int index=basePath.IndexOf("/UMA/");
+         if(index>=0){
+          basePath=basePath.Substring(0,index+4);
+         }
+         string finalPath=basePath+"/InternalDataStore/InGame/Resources/UMASettings.asset";
+         return finalPath;
+        }
+     public static string customSettingsPath=GetUMASettingsPath();
 
         [Multiline(7)]
         public string WarningMessage = "Warning: Please do not modify these\n settings using the inspector.\n Use the project settings instead.\n Modifying settings that need compiler\n directives set will NOT work if you\n edit them in the inspector!";
